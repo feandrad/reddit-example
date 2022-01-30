@@ -3,4 +3,7 @@
     <string name="top_posts_title">Reddit Posts</string>
     <string name="dismiss_all">Dismiss All</string>
     <string name="dismiss_post">Dismiss Post</string>
+
+    <string name="lorem_ipsum_small">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </string>
+    <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc gravida risus non risus vestibulum, lacinia dignissim sapien pellentesque. Cras ac dui semper, ornare libero a, ultrices metus.</string>
 </resources>

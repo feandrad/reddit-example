@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toStartOf="@+id/arrow_ic"
         app:layout_constraintStart_toEndOf="@id/thumbnail"
         app:layout_constraintTop_toTopOf="@id/thumbnail"
-        tools:text="Lorem ipsum dourest sit amet." />
+        tools:text="@string/lorem_ipsum_medium" />
 
     <TextView
         android:id="@+id/username"
