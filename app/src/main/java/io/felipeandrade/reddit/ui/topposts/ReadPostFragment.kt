@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import io.felipeandrade.reddit.R
 import io.felipeandrade.reddit.databinding.FragmentReadPostBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -28,7 +29,10 @@ class ReadPostFragment : Fragment() {
         sharedViewModel.readingPost.observe(this) { post ->
             binding.author.text = post.data.author
             binding.text.text = post.data.title
-            Glide.with(requireActivity()).load(post.data.imageUrl).into(binding.image)
+            Glide.with(requireActivity())
+                .load(post.data.imageUrl)
+                .placeholder(R.drawable.ic_image)
+                .into(binding.image)
         }
     }
 
