@@ -1,5 +1,7 @@
 package io.felipeandrade.reddit.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class RedditResponse(
     val kind: String,
     val data: ListRedditData,
@@ -20,7 +22,10 @@ data class T3DataResponse(
 data class PostData(
     val title: String,
     val author: String,
-    val thumbnail: String? = null,
-    val num_comments: Int = 0,
+    @SerializedName("thumbnail")
+    val imageUrl: String? = null,
+    @SerializedName("num_comments")
+    val comments: Int = 0,
+    val created: Long,
 )
 

@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 class TopPostsViewModel(private val loadTop50PostsUseCase: LoadTop50PostsUseCase): ViewModel() {
 
     val posts = MutableLiveData<List<RedditPost>>()
+    val readingPost = MutableLiveData<RedditPost>()
 
     init{
         loadTop50Posts()
@@ -20,5 +21,9 @@ class TopPostsViewModel(private val loadTop50PostsUseCase: LoadTop50PostsUseCase
             val res = loadTop50PostsUseCase()
             posts.postValue(res)
         }
+    }
+
+    fun readPost(post: RedditPost) {
+        readingPost.postValue(post)
     }
 }
