@@ -2,39 +2,60 @@ package io.felipeandrade.reddit.domain.di
 
 import io.felipeandrade.reddit.BuildConfig
 import io.felipeandrade.reddit.data.RedditRepository
-import io.felipeandrade.reddit.data.api.MockedApi
 import io.felipeandrade.reddit.data.api.RedditApi
-import io.felipeandrade.reddit.domain.usecase.LoadTop50PostsUseCase
+import io.felipeandrade.reddit.domain.usecase.DismissPostUseCase
+import io.felipeandrade.reddit.domain.usecase.LoadTopPostsUseCase
+import io.felipeandrade.reddit.domain.usecase.MarkPostReadUseCase
 import io.felipeandrade.reddit.ui.topposts.TopPostsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+ * Initialize and prepare dependency injection for the main elements of the application.
+ */
+val domainModule = module(override = true) {
+    single { LoadTopPostsUseCase(get()) }
+    single { MarkPostReadUseCase(get()) }
+    single { DismissPostUseCase(get()) }
+//    single<RedditApi> { MockedApi(androidApplication()) }
 
-val coreModule = module(override = true) {
+}
+
+/**
+ * Initialize and provides dependency injection all ui components.
+ */
+val uiModule = module(override = true){
+    viewModel { TopPostsViewModel(get(), get(), get()) }
+}
+
+/**
+ * Initialize and provides dependency injection all network components.
+ */
+val dataModule = module(override = true){
     single { createOkHttpClient() }
-    single { provideCharacterApi(get()) }
     single { provideRetrofit(get()) }
-
-    viewModel { TopPostsViewModel(get()) }
-    single { LoadTop50PostsUseCase(get()) }
+    single { provideRedditApi(get()) }
     single { RedditRepository(get()) }
-
-    // Since https://apigee.com/console/reddit is returning "Error 410: The API Console Service is no longer available."
-    // I am using the json file. Send me the correct API url and information so I can convert it to use live data.
-    single<RedditApi> { MockedApi(androidApplication()) }
 }
 
-fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
-    return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).client(okHttpClient)
-        .addConverterFactory(GsonConverterFactory.create()).build()
-}
+/**
+ * Provides the Api for Reddit calls.
+ *
+ * @param retrofit The retrofit instance.
+ * @return [RedditApi]
+ */
+fun provideRedditApi(retrofit: Retrofit): RedditApi = retrofit.create(RedditApi::class.java)
 
+/**
+ * Provide OkHttpClient with Logging interceptor and configure connection timeouts.
+ *
+ * @return [OkHttpClient]
+ */
 fun createOkHttpClient(): OkHttpClient {
     val httpLoggingInterceptor = HttpLoggingInterceptor()
     httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
@@ -44,5 +65,13 @@ fun createOkHttpClient(): OkHttpClient {
         .addInterceptor(httpLoggingInterceptor).build()
 }
 
-fun provideCharacterApi(retrofit: Retrofit): RedditApi =
-    retrofit.create(RedditApi::class.java)
+/**
+ * Initializes the retrofit instance for Network calls.
+ *
+ * @param okHttpClient
+ * @return [Retrofit]
+ */
+fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create()).build()
+}

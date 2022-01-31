@@ -2,24 +2,24 @@ package io.felipeandrade.reddit.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class RedditResponse(
+data class RedditResponseRaw(
     val kind: String,
-    val data: ListRedditData,
+    val data: ListRedditDataRaw,
 )
 
-data class ListRedditData(
+data class ListRedditDataRaw(
     val modhash: String,
-    val children: List<T3DataResponse>,
+    val children: List<T3DataResponseRaw>,
     val after: String? = null,
     val before: String? = null,
 )
 
-data class T3DataResponse(
+data class T3DataResponseRaw(
     val kind: String,
-    val data: PostData,
+    val data: PostDataRaw,
 )
 
-data class PostData(
+data class PostDataRaw(
     val title: String,
     val author: String,
     @SerializedName("thumbnail")

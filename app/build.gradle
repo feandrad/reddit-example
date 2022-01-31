@@ -15,7 +15,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String', 'BASE_URL', '"http://www.reddit.com/dev/api"'
+        buildConfigField 'String', 'BASE_URL', '"https://www.reddit.com/"'
 //        buildConfigField 'String', 'PUBLIC_API_KEY', public_api_key
 //        buildConfigField 'String', 'PRIVATE_API_KEY', private_api_key
     }

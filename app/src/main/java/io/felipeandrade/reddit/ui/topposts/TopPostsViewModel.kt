@@ -4,22 +4,28 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.felipeandrade.reddit.data.model.RedditPost
-import io.felipeandrade.reddit.domain.usecase.LoadTop50PostsUseCase
+import io.felipeandrade.reddit.domain.usecase.DismissPostUseCase
+import io.felipeandrade.reddit.domain.usecase.LoadTopPostsUseCase
+import io.felipeandrade.reddit.domain.usecase.MarkPostReadUseCase
 import kotlinx.coroutines.launch
 
-class TopPostsViewModel(private val loadTop50PostsUseCase: LoadTop50PostsUseCase): ViewModel() {
+class TopPostsViewModel(
+    private val loadTopPostsUseCase: LoadTopPostsUseCase,
+    private val dismissPostUseCase: DismissPostUseCase,
+    private val markPostReadUseCase: MarkPostReadUseCase,
+) : ViewModel() {
 
     val posts = MutableLiveData<List<RedditPost>>()
     val readingPost = MutableLiveData<RedditPost>()
 
-    init{
+    init {
         loadTop50Posts()
     }
 
     fun loadTop50Posts() {
         viewModelScope.launch {
-            val res = loadTop50PostsUseCase()
-            posts.postValue(res)
+            val res = loadTopPostsUseCase("funny", 50)
+            posts.postValue(res.posts)
         }
     }
 

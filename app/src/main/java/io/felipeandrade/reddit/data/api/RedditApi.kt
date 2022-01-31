@@ -1,10 +1,17 @@
 package io.felipeandrade.reddit.data.api
 
-import io.felipeandrade.reddit.data.model.RedditResponse
+import io.felipeandrade.reddit.data.model.RedditResponseRaw
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RedditApi {
 
-    @GET("www.reddit.com/top")
-    suspend fun getTopPosts(count: Int, before: String? = null, after: String? = null): RedditResponse
+    @GET("r/{subreddit}/top.json")
+    suspend fun getTopPosts(
+        @Path("subreddit") subreddit: String,
+        @Query("count") count: Int,
+        @Query("before")before: String? = null,
+        @Query("after")after: String? = null,
+    ): RedditResponseRaw
 }

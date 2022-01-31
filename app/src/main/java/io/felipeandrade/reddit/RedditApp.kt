@@ -1,7 +1,9 @@
 package io.felipeandrade.reddit
 
 import android.app.Application
-import io.felipeandrade.reddit.domain.di.coreModule
+import io.felipeandrade.reddit.domain.di.domainModule
+import io.felipeandrade.reddit.domain.di.uiModule
+import io.felipeandrade.reddit.domain.di.dataModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -15,7 +17,7 @@ class RedditApp : Application() {
     private fun initDependencyInjection() {
         startKoin {
             androidContext(this@RedditApp)
-            modules(listOf(coreModule))
+            modules(listOf(dataModule, domainModule, uiModule))
         }
     }
 }
