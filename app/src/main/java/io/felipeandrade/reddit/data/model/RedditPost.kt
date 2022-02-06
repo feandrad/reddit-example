@@ -7,15 +7,15 @@ data class RedditPost(
     val imageUrl: String? = null,
     val comments: Int = 0,
     val created: Long,
-    val read: Boolean = false,
+    var read: Boolean = false,
+    var dismissed: Boolean = false,
 ) {
-    constructor(data: PostDataRaw, read: Boolean = false) : this(
+    constructor(data: PostDataRaw) : this(
         id = data.name,
         title = data.title,
         author = data.author,
         imageUrl = data.thumbnail,
         comments = data.comments,
         created = data.created,
-        read = read,
     )
 }

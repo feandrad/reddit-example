@@ -2,6 +2,7 @@ package io.felipeandrade.reddit.ui.topposts
 
 import android.text.format.DateUtils
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
@@ -13,7 +14,7 @@ import io.felipeandrade.reddit.data.model.RedditPost
 import io.felipeandrade.reddit.databinding.ViewPostBinding
 
 class TopPostsAdapter(
-    private val onItemClicked: (RedditPost) -> Unit,
+    private val onItemClick: (RedditPost) -> Unit,
 ) : PagingDataAdapter<RedditPost, PostVH>(diffCallback) {
 
     override fun getItemViewType(position: Int) = R.layout.view_post
@@ -22,22 +23,21 @@ class TopPostsAdapter(
         val binding: ViewPostBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context), viewType, parent, false
         )
-        return PostVH(binding, onItemClicked)
+        return PostVH(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: PostVH, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
 }
 
 
 class PostVH(
     private val binding: ViewPostBinding,
-    private val onItemClicked: (RedditPost) -> Unit,
+    private val onItemClick: (RedditPost) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(post: RedditPost?) {
-        binding.post = PostBindingAdapter(post)
-        binding.executePendingBindings()
+    fun bind(post: RedditPost?, position: Int) {
+        reloadBindings(post)
 
         post?.let {
             Glide.with(itemView.context)
@@ -45,13 +45,29 @@ class PostVH(
                 .placeholder(R.drawable.ic_image)
                 .into(binding.thumbnail)
 
-            itemView.setOnClickListener { onItemClicked(post) }
+            binding.closeIc.setOnClickListener {
+                post.dismissed = true
+                reloadBindings(post)
+            }
+
+            itemView.setOnClickListener {
+                post.read = true
+                reloadBindings(post)
+                onItemClick(post)
+            }
         }
+    }
+
+    private fun reloadBindings(post: RedditPost?) {
+        binding.post = PostBindingAdapter(post)
+        binding.executePendingBindings()
     }
 }
 
 
 class PostBindingAdapter(val post: RedditPost?) {
+    val dismissed = if (post?.dismissed == false) View.VISIBLE else View.GONE
+    val read = if (post?.read == false) View.VISIBLE else View.GONE
     val comments = post?.let { "${post.comments} Comments" } ?: ""
     val author = post?.author
     val title = post?.title
