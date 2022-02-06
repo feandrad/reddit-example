@@ -8,10 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import io.felipeandrade.reddit.data.model.RedditPost
 import io.felipeandrade.reddit.databinding.FragmentPostsBinding
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class TopPostsFragment : Fragment() {
@@ -20,7 +20,7 @@ class TopPostsFragment : Fragment() {
     private val binding by lazy { FragmentPostsBinding.inflate(layoutInflater) }
     private val postsAdapter: TopPostsAdapter by lazy { TopPostsAdapter(diffCallback, onItemClick) }
 
-    private val onItemClick : (RedditPost) -> Unit = { sharedViewModel.openPost(it) }
+    private val onItemClick: (RedditPost) -> Unit = { sharedViewModel.openPost(it) }
 
     private val diffCallback = object : DiffUtil.ItemCallback<RedditPost>() {
         override fun areItemsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean =
@@ -56,13 +56,12 @@ class TopPostsFragment : Fragment() {
                 header = TopPostsStateAdapter(postsAdapter),
                 footer = TopPostsStateAdapter(postsAdapter),
             )
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    if (dy > 0) { //check for scroll down
-                        postsAdapter.retry()
-                    }
-                }
-            })
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            postsAdapter.onPagesUpdatedFlow.collectLatest {
+                binding.refreshLayout.isRefreshing = false
+            }
         }
     }
 

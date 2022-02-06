@@ -10,7 +10,7 @@ interface RedditApi {
     @GET("r/{subreddit}/top.json")
     suspend fun getTopPosts(
         @Path("subreddit") subreddit: String,
-        @Query("before")before: String? = null,
         @Query("after")after: String? = null,
+        @Query("before")before: String? = null,
     ): RedditResponseRaw
 }

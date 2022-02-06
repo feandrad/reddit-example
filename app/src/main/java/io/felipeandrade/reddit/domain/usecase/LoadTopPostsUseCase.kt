@@ -9,16 +9,14 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Retrieves the top reddit posts from a specific subreddit.
  *
- * @property repository the repository responsible for making each calls
+ * @property repository the repository responsible for making the calls
  */
 class LoadTopPostsUseCase(private val repository: RedditRepository) {
 
     /**
-     * Retrieves X top reddit posts from a specific subreddit.
+     * Retrieves X top reddit posts from the subreddit.
      *
-     * @param subReddit name of the subreddit.
      * @return Flow of [PagingData] with the [RedditPost]
      */
-    operator fun invoke(subReddit:String): Flow<PagingData<RedditPost>> =
-        repository.loadTopPosts(subReddit)
+    operator fun invoke() = repository.loadTopPosts("funny", 50)
 }

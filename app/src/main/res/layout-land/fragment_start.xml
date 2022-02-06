@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragReadPost"
+        android:id="@+id/fragOpenPost"
         android:name="io.felipeandrade.reddit.ui.topposts.ReadPostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"

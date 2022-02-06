@@ -21,7 +21,8 @@ class RedditRepository(private val redditApi: RedditApi) {
      */
     fun loadTopPosts(
         subreddit: String,
-    ) = Pager(PagingConfig(25)) {
+        count: Int,
+    ) = Pager(PagingConfig(count)) {
         RedditPostSource(redditApi, subreddit)
-    }.flow
+    }
 }

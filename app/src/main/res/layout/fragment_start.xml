@@ -8,18 +8,18 @@
         android:layout_height="match_parent">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragPostList"
+            android:id="@+id/fragOpenPost"
             android:name="io.felipeandrade.reddit.ui.topposts.ReadPostFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintVertical_weight="0.35"
-            app:layout_constraintBottom_toTopOf="@id/fragReadPost"
+            app:layout_constraintBottom_toTopOf="@id/fragPostList"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragReadPost"
+            android:id="@+id/fragPostList"
             android:name="io.felipeandrade.reddit.ui.topposts.TopPostsFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -27,7 +27,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fragPostList" />
+            app:layout_constraintTop_toBottomOf="@id/fragOpenPost" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
