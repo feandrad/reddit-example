@@ -16,7 +16,7 @@ class TopPostsViewModel(
 ) : ViewModel() {
 
     val posts = MutableLiveData<List<RedditPost>>()
-    val readingPost = MutableLiveData<RedditPost>()
+    val openedPost = MutableLiveData<RedditPost>()
 
     init {
         loadTop50Posts()
@@ -29,7 +29,11 @@ class TopPostsViewModel(
         }
     }
 
-    fun readPost(post: RedditPost) {
-        readingPost.postValue(post)
+    fun openPost(post: RedditPost) {
+        openedPost.postValue(post)
+    }
+
+    fun reloadPosts() {
+
     }
 }

@@ -1,5 +1,6 @@
 package io.felipeandrade.reddit.ui.topposts
 
+import android.annotation.SuppressLint
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,9 +12,43 @@ import io.felipeandrade.reddit.data.model.RedditPost
 import io.felipeandrade.reddit.databinding.ViewPostBinding
 
 class TopPostsAdapter(
-    private val itemList: List<RedditPost> = mutableListOf(),
     private val onItemClicked: (RedditPost) -> Unit
 ) : RecyclerView.Adapter<TopPostsAdapter.PostVH>() {
+
+    private val itemList: MutableList<RedditPost> = mutableListOf()
+
+    /**
+     * Replace the [itemList] with the contents from the new list and notify changes.
+     *
+     * @param list
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    fun resetItems(list: List<RedditPost>) {
+        itemList.clear()
+        itemList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    /**
+     * Empty the [itemList] and notify changes.
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    fun clear() {
+        itemList.clear()
+        notifyDataSetChanged()
+    }
+
+    /**
+     * Add all items from the list into the [itemList] and notify changes.
+     *
+     * @param list
+     */
+    fun addAll(list: List<RedditPost>) {
+        val oldSize = itemList.size
+        itemList.addAll(list)
+        notifyItemRangeInserted(oldSize - 1, list.size)
+    }
+
 
     override fun getItemCount(): Int = itemList.size
 
@@ -29,6 +64,7 @@ class TopPostsAdapter(
     override fun onBindViewHolder(holder: PostVH, position: Int) {
         holder.bind(itemList[position])
     }
+
 
     class PostVH(
         private val binding: ViewPostBinding,

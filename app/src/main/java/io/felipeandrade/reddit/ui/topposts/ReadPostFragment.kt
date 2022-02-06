@@ -26,7 +26,7 @@ class ReadPostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel.readingPost.observe(this) { post ->
+        sharedViewModel.openedPost.observe(this) { post ->
             binding.author.text = post.data.author
             binding.text.text = post.data.title
             Glide.with(requireActivity())
