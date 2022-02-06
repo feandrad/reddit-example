@@ -20,10 +20,10 @@ data class T3DataResponseRaw(
 )
 
 data class PostDataRaw(
+    val name: String,
     val title: String,
     val author: String,
-    @SerializedName("thumbnail")
-    val imageUrl: String? = null,
+    val thumbnail: String? = null,
     @SerializedName("num_comments")
     val comments: Int = 0,
     val created: Long,

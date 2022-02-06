@@ -13,10 +13,8 @@ import io.felipeandrade.reddit.data.model.RedditPost
 import io.felipeandrade.reddit.databinding.ViewPostBinding
 
 class TopPostsAdapter(
-    diffCallback: DiffUtil.ItemCallback<RedditPost>,
     private val onItemClicked: (RedditPost) -> Unit,
-) : PagingDataAdapter<RedditPost, TopPostsAdapter.PostVH>(diffCallback) {
-
+) : PagingDataAdapter<RedditPost, PostVH>(diffCallback) {
 
     override fun getItemViewType(position: Int) = R.layout.view_post
 
@@ -30,24 +28,24 @@ class TopPostsAdapter(
     override fun onBindViewHolder(holder: PostVH, position: Int) {
         holder.bind(getItem(position))
     }
+}
 
 
-    class PostVH(
-        private val binding: ViewPostBinding,
-        private val onItemClicked: (RedditPost) -> Unit,
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(post: RedditPost?) {
-            binding.post = PostBindingAdapter(post)
-            binding.executePendingBindings()
+class PostVH(
+    private val binding: ViewPostBinding,
+    private val onItemClicked: (RedditPost) -> Unit,
+) : RecyclerView.ViewHolder(binding.root) {
+    fun bind(post: RedditPost?) {
+        binding.post = PostBindingAdapter(post)
+        binding.executePendingBindings()
 
-            post?.let {
-                Glide.with(itemView.context)
-                    .load(post.imageUrl)
-                    .placeholder(R.drawable.ic_image)
-                    .into(binding.thumbnail)
+        post?.let {
+            Glide.with(itemView.context)
+                .load(post.imageUrl)
+                .placeholder(R.drawable.ic_image)
+                .into(binding.thumbnail)
 
-                itemView.setOnClickListener { onItemClicked(post) }
-            }
+            itemView.setOnClickListener { onItemClicked(post) }
         }
     }
 }
@@ -60,4 +58,13 @@ class PostBindingAdapter(val post: RedditPost?) {
     val since = post?.let {
         DateUtils.getRelativeTimeSpanString(post.created * 1000L)
     } ?: ""
+}
+
+
+private val diffCallback = object : DiffUtil.ItemCallback<RedditPost>() {
+    override fun areItemsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean =
+        oldItem == newItem
 }

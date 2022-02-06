@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import io.felipeandrade.reddit.data.model.RedditPost
 import io.felipeandrade.reddit.databinding.FragmentPostsBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -18,18 +16,7 @@ class TopPostsFragment : Fragment() {
 
     private val sharedViewModel: TopPostsViewModel by sharedViewModel()
     private val binding by lazy { FragmentPostsBinding.inflate(layoutInflater) }
-    private val postsAdapter: TopPostsAdapter by lazy { TopPostsAdapter(diffCallback, onItemClick) }
-
-    private val onItemClick: (RedditPost) -> Unit = { sharedViewModel.openPost(it) }
-
-    private val diffCallback = object : DiffUtil.ItemCallback<RedditPost>() {
-        override fun areItemsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean =
-            oldItem == newItem
-
-        override fun areContentsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean =
-            oldItem == newItem
-    }
-
+    private val postsAdapter: TopPostsAdapter by lazy { TopPostsAdapter{ sharedViewModel.openPost(it) } }
 
     override fun onCreateView(
         inflater: LayoutInflater,
