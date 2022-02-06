@@ -1,11 +1,9 @@
 package io.felipeandrade.reddit.domain.di
 
 import io.felipeandrade.reddit.BuildConfig
-import io.felipeandrade.reddit.data.repository.RedditRepository
 import io.felipeandrade.reddit.data.api.RedditApi
-import io.felipeandrade.reddit.domain.usecase.DismissPostUseCase
+import io.felipeandrade.reddit.data.repository.RedditRepository
 import io.felipeandrade.reddit.domain.usecase.LoadTopPostsUseCase
-import io.felipeandrade.reddit.domain.usecase.MarkPostReadUseCase
 import io.felipeandrade.reddit.ui.topposts.TopPostsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -20,23 +18,19 @@ import java.util.concurrent.TimeUnit
  */
 val domainModule = module(override = true) {
     single { LoadTopPostsUseCase(get()) }
-    single { MarkPostReadUseCase(get()) }
-    single { DismissPostUseCase(get()) }
-//    single<RedditApi> { MockedApi(androidApplication()) }
-
 }
 
 /**
  * Initialize and provides dependency injection all ui components.
  */
-val uiModule = module(override = true){
-    viewModel { TopPostsViewModel(get(), get(), get()) }
+val uiModule = module(override = true) {
+    viewModel { TopPostsViewModel(get()) }
 }
 
 /**
  * Initialize and provides dependency injection all network components.
  */
-val dataModule = module(override = true){
+val dataModule = module(override = true) {
     single { createOkHttpClient() }
     single { provideRetrofit(get()) }
     single { provideRedditApi(get()) }

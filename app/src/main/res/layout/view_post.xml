@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="android.view.ViewGroup.LayoutParams"/>
 
         <variable
             name="post"
@@ -15,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="@{post.dismissed}"
+        android:visibility="@{post.dismissed ? View.GONE : View.VISIBLE}"
         android:paddingTop="4dp"
         android:paddingBottom="8dp">
 
@@ -70,6 +71,7 @@
             android:layout_height="72dp"
             android:layout_margin="4dp"
             android:layout_marginStart="4dp"
+            android:contentDescription="@string/thumbnail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/username"
             tools:src="@drawable/ic_launcher_background" />
