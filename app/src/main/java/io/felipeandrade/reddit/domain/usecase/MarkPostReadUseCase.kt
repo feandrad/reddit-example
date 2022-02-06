@@ -1,6 +1,6 @@
 package io.felipeandrade.reddit.domain.usecase
 
-import io.felipeandrade.reddit.data.RedditRepository
+import io.felipeandrade.reddit.data.repository.RedditRepository
 
 /**
  * Marks a specific post as read.

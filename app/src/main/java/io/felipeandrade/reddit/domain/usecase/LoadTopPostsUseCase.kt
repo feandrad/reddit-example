@@ -1,8 +1,10 @@
 package io.felipeandrade.reddit.domain.usecase
 
-import io.felipeandrade.reddit.data.RedditRepository
+import androidx.paging.PagingData
+import io.felipeandrade.reddit.data.repository.RedditRepository
 import io.felipeandrade.reddit.data.model.RedditPost
 import io.felipeandrade.reddit.data.model.TopPostsResponse
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Retrieves the top reddit posts from a specific subreddit.
@@ -15,9 +17,8 @@ class LoadTopPostsUseCase(private val repository: RedditRepository) {
      * Retrieves X top reddit posts from a specific subreddit.
      *
      * @param subReddit name of the subreddit.
-     * @param count number of posts being retrieved.
-     * @return Flow of [RedditPost]
+     * @return Flow of [PagingData] with the [RedditPost]
      */
-    suspend operator fun invoke(subReddit:String, count: Int): TopPostsResponse =
-        repository.loadTopPosts(subReddit, count)
+    operator fun invoke(subReddit:String): Flow<PagingData<RedditPost>> =
+        repository.loadTopPosts(subReddit)
 }

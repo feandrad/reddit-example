@@ -1,7 +1,7 @@
 package io.felipeandrade.reddit.domain.di
 
 import io.felipeandrade.reddit.BuildConfig
-import io.felipeandrade.reddit.data.RedditRepository
+import io.felipeandrade.reddit.data.repository.RedditRepository
 import io.felipeandrade.reddit.data.api.RedditApi
 import io.felipeandrade.reddit.domain.usecase.DismissPostUseCase
 import io.felipeandrade.reddit.domain.usecase.LoadTopPostsUseCase

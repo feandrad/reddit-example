@@ -26,11 +26,11 @@ class ReadPostFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel.openedPost.observe(this) { post ->
-            binding.author.text = post.data.author
-            binding.text.text = post.data.title
+        sharedViewModel.openedPost.observe(viewLifecycleOwner) { post ->
+            binding.author.text = post.author
+            binding.text.text = post.title
             Glide.with(requireActivity())
-                .load(post.data.imageUrl)
+                .load(post.imageUrl)
                 .placeholder(R.drawable.ic_image)
                 .into(binding.image)
         }

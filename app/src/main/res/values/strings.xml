@@ -6,4 +6,5 @@
 
     <string name="lorem_ipsum_small">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </string>
     <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc gravida risus non risus vestibulum, lacinia dignissim sapien pellentesque. Cras ac dui semper, ornare libero a, ultrices metus.</string>
+    <string name="retry">Retry</string>
 </resources>

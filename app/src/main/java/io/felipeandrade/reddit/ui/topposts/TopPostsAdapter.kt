@@ -1,10 +1,11 @@
 package io.felipeandrade.reddit.ui.topposts
 
-import android.annotation.SuppressLint
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import io.felipeandrade.reddit.R
@@ -12,45 +13,10 @@ import io.felipeandrade.reddit.data.model.RedditPost
 import io.felipeandrade.reddit.databinding.ViewPostBinding
 
 class TopPostsAdapter(
-    private val onItemClicked: (RedditPost) -> Unit
-) : RecyclerView.Adapter<TopPostsAdapter.PostVH>() {
+    diffCallback: DiffUtil.ItemCallback<RedditPost>,
+    private val onItemClicked: (RedditPost) -> Unit,
+) : PagingDataAdapter<RedditPost, TopPostsAdapter.PostVH>(diffCallback) {
 
-    private val itemList: MutableList<RedditPost> = mutableListOf()
-
-    /**
-     * Replace the [itemList] with the contents from the new list and notify changes.
-     *
-     * @param list
-     */
-    @SuppressLint("NotifyDataSetChanged")
-    fun resetItems(list: List<RedditPost>) {
-        itemList.clear()
-        itemList.addAll(list)
-        notifyDataSetChanged()
-    }
-
-    /**
-     * Empty the [itemList] and notify changes.
-     */
-    @SuppressLint("NotifyDataSetChanged")
-    fun clear() {
-        itemList.clear()
-        notifyDataSetChanged()
-    }
-
-    /**
-     * Add all items from the list into the [itemList] and notify changes.
-     *
-     * @param list
-     */
-    fun addAll(list: List<RedditPost>) {
-        val oldSize = itemList.size
-        itemList.addAll(list)
-        notifyItemRangeInserted(oldSize - 1, list.size)
-    }
-
-
-    override fun getItemCount(): Int = itemList.size
 
     override fun getItemViewType(position: Int) = R.layout.view_post
 
@@ -62,7 +28,7 @@ class TopPostsAdapter(
     }
 
     override fun onBindViewHolder(holder: PostVH, position: Int) {
-        holder.bind(itemList[position])
+        holder.bind(getItem(position))
     }
 
 
@@ -70,24 +36,28 @@ class TopPostsAdapter(
         private val binding: ViewPostBinding,
         private val onItemClicked: (RedditPost) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(post: RedditPost) {
+        fun bind(post: RedditPost?) {
             binding.post = PostBindingAdapter(post)
             binding.executePendingBindings()
 
-            Glide.with(itemView.context)
-                .load(post.data.imageUrl)
-                .placeholder(R.drawable.ic_image)
-                .into(binding.thumbnail)
+            post?.let {
+                Glide.with(itemView.context)
+                    .load(post.imageUrl)
+                    .placeholder(R.drawable.ic_image)
+                    .into(binding.thumbnail)
 
-            itemView.setOnClickListener { onItemClicked(post) }
+                itemView.setOnClickListener { onItemClicked(post) }
+            }
         }
     }
 }
 
 
-class PostBindingAdapter(val post: RedditPost) {
-    val comments = "${post.data.comments} Comments"
-    val author = post.data.author
-    val title = post.data.title
-    val since = DateUtils.getRelativeTimeSpanString(post.data.created * 1000L) ?: ""
+class PostBindingAdapter(val post: RedditPost?) {
+    val comments = post?.let { "${post.comments} Comments" } ?: ""
+    val author = post?.author
+    val title = post?.title
+    val since = post?.let {
+        DateUtils.getRelativeTimeSpanString(post.created * 1000L)
+    } ?: ""
 }
