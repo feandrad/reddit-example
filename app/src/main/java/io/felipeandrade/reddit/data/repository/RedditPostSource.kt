@@ -9,8 +9,6 @@ import java.lang.Exception
 class RedditPostSource(
     private val api: RedditApi,
     private val subreddit: String,
-    private val before: String? = null,
-    private val after: String? = null,
 ) : PagingSource<String, RedditPost>() {
 
     override fun getRefreshKey(state: PagingState<String, RedditPost>): String? =
@@ -19,7 +17,7 @@ class RedditPostSource(
         }
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, RedditPost> = try {
-        val response = api.getTopPosts(subreddit, before, after)
+        val response = api.getTopPosts(subreddit, params.key)
         val postList = response.data.children.map { RedditPost(it.data) }
 
         LoadResult.Page(

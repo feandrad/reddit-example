@@ -14,18 +14,14 @@ import io.felipeandrade.reddit.data.model.TopPostsResponse
 class RedditRepository(private val redditApi: RedditApi) {
 
     /**
-     * Searches for the top posts in a specific subreddit.
+     * Searches for the top posts in a specific subreddit (max 25 results per page).
      *
      * @param subreddit name of the subreddit being searched.
-     * @param before code for the next page (max 25 results per page).
-     * @param after code for previous page if it exists.
      * @return Flow of the Pager
      */
     fun loadTopPosts(
         subreddit: String,
-        before: String? = null,
-        after: String? = null,
     ) = Pager(PagingConfig(25)) {
-        RedditPostSource(redditApi, subreddit, before, after)
+        RedditPostSource(redditApi, subreddit)
     }.flow
 }
