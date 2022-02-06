@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="post"
             type="io.felipeandrade.reddit.ui.topposts.PostBindingAdapter" />
@@ -13,73 +15,77 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="4dp">
-
-        <TextView
-            android:id="@+id/comments_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:text="@{post.comments}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/thumbnail"
-            tools:text="1448 Comments" />
-
-        <TextView
-            android:id="@+id/timestamp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="@{post.since}"
-            app:layout_constraintStart_toEndOf="@+id/username"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="19 hours ago" />
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="@{post.title}"
-            app:layout_constraintBottom_toBottomOf="@id/thumbnail"
-            app:layout_constraintEnd_toStartOf="@+id/arrow_ic"
-            app:layout_constraintStart_toEndOf="@id/thumbnail"
-            app:layout_constraintTop_toTopOf="@id/thumbnail"
-            tools:text="@string/lorem_ipsum_small" />
-
-        <TextView
-            android:id="@+id/username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="@{post.author}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Username" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/close_ic"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="4dp"
-            android:elevation="4dp"
-            android:padding="4dp"
-            android:src="@drawable/ic_close"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="?colorOnSurface" />
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/unread_indicator"
             android:layout_width="12dp"
             android:layout_height="12dp"
+            android:layout_margin="4dp"
             android:elevation="8dp"
-            android:visibility="@{post.post.read ? View.GONE : View.VISIBLE}"
             android:src="@drawable/shape_circle"
+            android:visibility="@{post.post.read ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/username"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="?colorAccent" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@{post.author}"
+            app:layout_constraintStart_toEndOf="@+id/unread_indicator"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Username" />
+
+        <TextView
+            android:id="@+id/timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:text="@{post.since}"
+            app:layout_constraintStart_toEndOf="@+id/username"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="19 hours ago" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/close_ic"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="4dp"
+            android:elevation="4dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"
+            app:tint="?colorOnSurface" />
+
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_margin="4dp"
+            android:layout_marginStart="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/username"
+            tools:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{post.title}"
+            app:layout_constraintBottom_toTopOf="@+id/comments_count"
+            app:layout_constraintEnd_toStartOf="@+id/arrow_ic"
+            app:layout_constraintStart_toEndOf="@id/thumbnail"
+            app:layout_constraintTop_toTopOf="@id/thumbnail"
+            tools:text="@string/lorem_ipsum_small" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/arrow_ic"
@@ -92,15 +98,14 @@
             app:layout_constraintTop_toTopOf="@id/thumbnail"
             app:tint="?colorOnSurface" />
 
-        <ImageView
-            android:id="@+id/thumbnail"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username"
-            tools:src="@drawable/ic_launcher_background" />
+        <TextView
+            android:id="@+id/comments_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{post.comments}"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbnail"
+            app:layout_constraintEnd_toEndOf="@+id/text"
+            tools:text="1448 Comments" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
