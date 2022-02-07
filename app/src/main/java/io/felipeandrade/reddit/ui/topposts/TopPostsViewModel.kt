@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import io.felipeandrade.reddit.data.model.RedditPost
 import io.felipeandrade.reddit.domain.usecase.LoadTopPostsUseCase
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.onEmpty
 
 
 class TopPostsViewModel(
@@ -20,9 +22,5 @@ class TopPostsViewModel(
 
     fun openPost(post: RedditPost) {
         openedPost.postValue(post)
-    }
-
-    fun dismissAll() {
-
     }
 }

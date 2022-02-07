@@ -39,7 +39,11 @@ class TopPostsFragment : Fragment() {
 
 
     private fun initRecyclerView() {
-        binding.refreshLayout.setOnRefreshListener { postsAdapter.refresh() }
+        binding.refreshLayout.setOnRefreshListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                sharedViewModel.posts.collectLatest { postsAdapter.submitData(it) }
+            }
+        }
 
         binding.postsList.apply {
             layoutManager =
@@ -59,7 +63,9 @@ class TopPostsFragment : Fragment() {
 
     private fun initDismissAll() {
         binding.dismissAll.setOnClickListener {
-            sharedViewModel.dismissAll()
+            viewLifecycleOwner.lifecycleScope.launch {
+                postsAdapter.submitData(PagingData.empty())
+            }
         }
     }
 
