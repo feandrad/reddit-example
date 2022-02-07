@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.paging.Pager
 import androidx.paging.PagingDataAdapter
-import androidx.paging.liveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -73,7 +72,7 @@ class PostVH(
 
 private val diffCallback = object : DiffUtil.ItemCallback<RedditPost>() {
     override fun areItemsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean =
-        oldItem.id == newItem.id
+        oldItem.name == newItem.name
 
     override fun areContentsTheSame(oldItem: RedditPost, newItem: RedditPost): Boolean =
         oldItem == newItem
